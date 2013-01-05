@@ -55,4 +55,17 @@ type##Vector_add(type##Vector *vector, type e) { \
     vector->elements[vector->size] = e; \
     vector->size = vector->size + 1; \
     return EXIT_SUCCESS; \
+} \
+\
+static type* \
+type##Vector_get(type##Vector *vector, int index) { \
+    if (vector == NULL) { \
+        perror("vector is null!"); \
+        return NULL; \
+    } \
+    if (index < 0 || index >= vector->size) { \
+        fprintf(stderr , "Index %d outside of vector (size = %d)\n", index, vector->size); \
+        return NULL; \
+    } \
+    return &(vector->elements[index]); \
 }

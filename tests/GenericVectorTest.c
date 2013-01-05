@@ -14,7 +14,11 @@ int main(void) {
     }
     int sum = 0;
     for (i = 0; i < 10; ++i) {
-        sum += elements[i];
+        sum += *(intVector_get(a, i));
     }
     printf("Sum from 1 to 10 (must be 55): %d is %s\n", sum, (sum == 55) ? "True" : "False"  );
+    
+    puts("Tests for get which generate errors");
+    intVector_get(a, -4);
+    intVector_get(a, a->size);
 }
