@@ -68,4 +68,31 @@ type##Vector_get(type##Vector *vector, int index) { \
         return NULL; \
     } \
     return &(vector->elements[index]); \
+} \
+\
+static type* \
+type##Vector_removeAt(type##Vector *vector, int index, type *holder) { \
+    if (vector == NULL) { \
+        perror("vector is null!"); \
+        return NULL; \
+    } \
+    if (index < 0 || index >= vector->size) { \
+        fprintf(stderr , "Index %d outside of vector (size = %d)\n", index, vector->size); \
+        return NULL; \
+    } \
+    *holder = vector->elements[index]; \
+    /* Remove element and shift all other elements on the left */ \
+    int i = index; \
+    for (; i < vector->size - 1 ; ++i) { \
+        vector->elements[i] = vector->elements[i + 1]; \
+    } \
+    vector->size = vector->size - 1; \
+    /* Vector is only a quarter full -> resize it to half size */ \
+    if ((vector->capacity / 4) == vector->size) { \
+        if (type##Vector_resize(vector, vector->capacity / 2) == EXIT_FAILURE) { \
+            return NULL; \
+        } \
+    } \
+    \
+    return holder; \
 }
