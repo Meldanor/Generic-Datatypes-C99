@@ -1,6 +1,9 @@
 #include <stdio.h>
 #include "../GenericVector.h"
 
+int equalsInt(int *a, int *b) {
+    return (*a == *b ? 0 : -1);
+}
 
 DefVector(int)
 void testIntVector(void) {
@@ -36,6 +39,17 @@ void testIntVector(void) {
         intVector_removeAt(a, 1, &r);
     }
     
+    for (i = 0; i < a->size -1; ++i) {
+        printf("%d , ", *(intVector_get(a, i)));
+    }
+    printf("%d\n", *(intVector_get(a, a->size -1)));
+    printf("C:%d S:%d\n", a->capacity, a->size);
+    
+    r = 11;
+    printf("Removed the %d:",r);
+    // Remove the 9
+    r = intVector_remove(a, &r, &equalsInt);
+    printf("%s\n", (r == EXIT_SUCCESS) ? "True" : "False"  );
     for (i = 0; i < a->size -1; ++i) {
         printf("%d , ", *(intVector_get(a, i)));
     }

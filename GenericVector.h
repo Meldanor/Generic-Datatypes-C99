@@ -80,7 +80,9 @@ type##Vector_removeAt(type##Vector *vector, int index, type *holder) { \
         fprintf(stderr , "Index %d outside of vector (size = %d)\n", index, vector->size); \
         return NULL; \
     } \
-    *holder = vector->elements[index]; \
+    /* Only store removed element when interessted in */ \
+    if (holder != NULL) \
+        *holder = vector->elements[index]; \
     /* Remove element and shift all other elements on the left */ \
     int i = index; \
     for (; i < vector->size - 1 ; ++i) { \
@@ -95,4 +97,20 @@ type##Vector_removeAt(type##Vector *vector, int index, type *holder) { \
     } \
     \
     return holder; \
+} \
+\
+static int \
+type##Vector_remove(type##Vector *vector, type *e, int (*equals)(type *e1, type *e2)) { \
+    if (vector == NULL) { \
+        perror("vector is null!"); \
+        return EXIT_FAILURE; \
+    } \
+    int i; \
+    for (i = 0 ; i < vector->size; ++i) { \
+        if (((*equals)(e, &(vector->elements[i]))) == 0) { \
+            type##Vector_removeAt(vector, i, NULL); \
+            return EXIT_SUCCESS; \
+        } \
+    } \
+    return EXIT_FAILURE;\
 }
