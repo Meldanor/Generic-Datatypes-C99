@@ -113,4 +113,19 @@ type##Vector_remove(type##Vector *vector, type *e, int (*equals)(type *e1, type 
         } \
     } \
     return EXIT_FAILURE;\
+} \
+\
+static int \
+type##Vector_contains(type##Vector *vector, type *e, int (*equals)(type *e1, type *e2)) { \
+    if (vector == NULL) { \
+        perror("vector is null!"); \
+        return EXIT_FAILURE; \
+    } \
+    int i; \
+    for (i = 0 ; i < vector->size; ++i) { \
+        if (((*equals)(e, &(vector->elements[i]))) == 0) { \
+            return EXIT_SUCCESS; \
+        } \
+    } \
+    return EXIT_FAILURE;\
 }

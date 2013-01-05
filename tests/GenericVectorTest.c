@@ -5,7 +5,18 @@ int equalsInt(int *a, int *b) {
     return (*a == *b ? 0 : -1);
 }
 
+
+
 DefVector(int)
+
+void printIntVector(intVector *a) {
+    puts("Print array");
+    int i ;
+    for (i = 0; i < a->size -1; ++i) {
+        printf("%d , ", *(intVector_get(a, i)));
+    }
+    printf("%d\n", *(intVector_get(a, a->size -1)));
+}
 void testIntVector(void) {
     intVector *a = intVector_construct(1);
     int *elements = a->elements;
@@ -23,38 +34,45 @@ void testIntVector(void) {
     puts("Tests for get which generate errors");
     intVector_get(a, -4);
     intVector_get(a, a->size);
-    
-    puts("Remote at index 5");
+    puts("");
+
+    printIntVector(a);
+    puts("Remove value at index 5");
     int r;
     intVector_removeAt(a, 5, &r);
     printf("Removed value : %d\n", r);
-    puts("Print array");
-    for (i = 0; i < a->size -1; ++i) {
-        printf("%d , ", *(intVector_get(a, i)));
-    }
-    printf("%d\n", *(intVector_get(a, a->size -1)));
-    
-    // Remove enough elements to resize the array
+    printIntVector(a);
+    puts("");
+
+    puts("Remove elements to resize the array");
+    printf("Old: C:%d S:%d\n", a->capacity, a->size);
     for ( i = 0 ; i < 6 ; ++i) {
         intVector_removeAt(a, 1, &r);
     }
-    
-    for (i = 0; i < a->size -1; ++i) {
-        printf("%d , ", *(intVector_get(a, i)));
-    }
-    printf("%d\n", *(intVector_get(a, a->size -1)));
-    printf("C:%d S:%d\n", a->capacity, a->size);
-    
+    printf("New: C:%d S:%d\n", a->capacity, a->size);
+    printIntVector(a);
+
+    puts("");
     r = 11;
-    printf("Removed the %d:",r);
-    // Remove the 9
+    printf("Remove the %d: ",r);
     r = intVector_remove(a, &r, &equalsInt);
     printf("%s\n", (r == EXIT_SUCCESS) ? "True" : "False"  );
-    for (i = 0; i < a->size -1; ++i) {
-        printf("%d , ", *(intVector_get(a, i)));
+    printIntVector(a);
+    
+    puts("");
+    r = 9;
+    printf("Remove the %d: ",r);
+    r = intVector_remove(a, &r, &equalsInt);
+    printf("%s\n", (r == EXIT_SUCCESS) ? "True" : "False"  );
+    printIntVector(a);
+    
+    puts("Add elements from 11 to 20 and test if 13 is contained");
+    for (i = 10; i < 20; ++i) {
+        intVector_add(a, i + 1);
     }
-    printf("%d\n", *(intVector_get(a, a->size -1)));
-    printf("C:%d S:%d\n", a->capacity, a->size);
+    printIntVector(a);
+    r = 13;
+    printf("Contains 13: %s\n", intVector_contains(a, &r, &equalsInt) == EXIT_SUCCESS ? "True" : "False"  );
 }
 
 int main(void) {
