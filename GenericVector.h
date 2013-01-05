@@ -27,6 +27,7 @@ type##Vector_resize(type##Vector *vector, int newSize) { \
         perror("vector is null!"); \
         return EXIT_FAILURE; \
     } \
+    /* Resize the vector with double size */ \
     type *ptr = realloc(vector->elements, sizeof(type) * newSize); \
     if (ptr == NULL) { \
         perror("Insufficent memory!"); \
@@ -50,26 +51,8 @@ type##Vector_add(type##Vector *vector, type e) { \
         } \
     } \
     \
+    /* Add element to vector */ \
     vector->elements[vector->size] = e; \
     vector->size = vector->size + 1; \
     return EXIT_SUCCESS; \
-} 
-// TEST METHODE!
-DefVector(int)
-
-#include <stdio.h>
-int main(void) {
-    // TEST CONSTRUCT
-    intVector *a = intVector_construct(1);
-    int *elements = a->elements;
-    int i = 0;
-    // Vector contains numbers from 1 to inclusive 10
-    for (i = 0; i < 10; ++i) {
-        intVector_add(a, i + 1);
-    }
-    int sum = 0;
-    for (i = 0; i < 10; ++i) {
-        sum += elements[i];
-    }
-    printf("Sum from 1 to 10 (must be 55): %d is %s\n", sum, (sum == 55) ? "True" : "False"  );
 }
