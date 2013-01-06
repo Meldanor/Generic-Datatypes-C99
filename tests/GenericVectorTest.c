@@ -7,7 +7,7 @@ int equalsInt(int *a, int *b) {
 
 
 
-DefVector(int)
+DefVector(int, int)
 
 void printIntVector(intVector *a) {
     puts("Print array");
@@ -75,10 +75,29 @@ void testIntVector(void) {
     printf("Contains 13: %s\n", intVector_contains(a, &r, &equalsInt) == EXIT_SUCCESS ? "True" : "False"  );
 }
 
+struct LoL {
+    int a;
+    int b;
+};
+
+DefVector(struct LoL, LoL)
+
+void testStructVector(void) {
+    struct LoL lol = {2,3};
+    printf("Struct Lol: a=%d, b=%d\n", lol.a, lol.b);
+    
+    LoLVector *a = LoLVector_construct(1);
+    printf("%d\n", a != NULL);
+    
+}
+
 int main(void) {
     puts("Tests with int");
     puts("-----");
     testIntVector();
+    puts("-----");
+    puts("-----");
+    testStructVector();
     puts("-----");
 }
 
